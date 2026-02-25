@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mask Attack vs Brute Force: Efficiency in Cracking | Aayush Prajapati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .blog-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .blog-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .blog-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .blog-meta {
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .blog-body {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+
+        .blog-body h2 {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: var(--highlight-color);
+        }
+
+        .blog-body p {
+            margin-bottom: 20px;
+        }
+
+        .blog-body ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .blog-body li {
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--highlight-color);
+            text-decoration: none;
+            margin-top: 50px;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        .back-link i {
+            margin-right: 8px;
+        }
+
+        pre {
+            background-color: var(--secondary-bg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        code {
+            font-family: 'Consolas', monospace;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blog-content">
+        <header class="blog-header">
+            <h1>Mask Attack vs Brute Force: Efficiency in Cracking</h1>
+            <div class="blog-meta">
+                <span><i class="fa-solid fa-calendar-days"></i> February 01, 2026</span>
+                <span style="margin-left: 20px;"><i class="fa-solid fa-user"></i> Aayush Prajapati</span>
+            </div>
+        </header>
+
+        <article class="blog-body">
+            <p>
+                In the world of cybersecurity and password recovery, two common techniques for cracking passwords are
+                <strong>Brute Force Attacks</strong> and <strong>Mask Attacks</strong>. While both aim to find the
+                correct password, they differ significantly in their approach and efficiency.
+            </p>
+
+            <h2>Understanding Brute Force Attacks</h2>
+            <p>
+                A brute force attack is the simplest and most exhaustive method. It systematically tries every possible
+                combination of characters until the correct one is found. If a password is 8 characters long and uses
+                uppercase, lowercase, numbers, and symbols, the search space is astronomical.
+            </p>
+            <p>
+                The primary disadvantage is <strong>inefficiency</strong>. It spends time testing combinations that are
+                highly unlikely to be used, such as random strings like <code>@z1#P9qL</code>, which most users don't
+                choose.
+            </p>
+
+            <h2>What is a Mask Attack?</h2>
+            <p>
+                A mask attack is a much smarter and more targeted version of a brute force attack. Instead of trying
+                every possible character at every position, it uses a "mask" to define the structure of the password
+                based on known patterns or common human behaviors.
+            </p>
+            <p>
+                For example, many users follow patterns like:
+            </p>
+            <ul>
+                <li>Starting with an uppercase letter.</li>
+                <li>Following with several lowercase letters.</li>
+                <li>Ending with a few digits or a special character (e.g., <code>Password123!</code>).</li>
+            </ul>
+
+            <h2>Why Mask Attacks are More Efficient</h2>
+            <p>
+                The efficiency comes from reducing the <strong>search space</strong>. By assuming certain positions have
+                specific character types, the number of combinations to test drops significantly.
+            </p>
+            <p>
+                Consider a 6-character password where we know the first character is an uppercase letter and the rest
+                are digits.
+            </p>
+            <ul>
+                <li><strong>Full Brute Force (95 characters available):</strong> 95<sup>6</sup> = 735,091,890,625
+                    combinations.</li>
+                <li><strong>Mask Attack (?u?d?d?d?d?d):</strong> 26 &times; 10 &times; 10 &times; 10 &times; 10 &times;
+                    10 = 2,600,000 combinations.</li>
+            </ul>
+            <p>
+                In this scenario, the mask attack is <strong>hundreds of thousands of times faster</strong> than a
+                standard brute force attack.
+            </p>
+
+            <h2>Conclusion</h2>
+            <p>
+                While brute force is a "guaranteed" method given enough time, mask attacks capitalize on human
+                psychology and common naming conventions. For security professionals and researchers, mastering mask
+                attacks is essential for efficient vulnerability testing and password recovery.
+            </p>
+        </article>
+
+        <a href="../index.html#blog" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Portfolio
+        </a>
+    </div>
+
+    <script>
+        // Apply theme from local storage if available
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</body>
+
+</html>
