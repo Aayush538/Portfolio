@@ -168,7 +168,7 @@ const certificatesData = [
     certifiedTag: true,
     issuer: "The SecOps Group",
     date: "No Expiration",
-    image: "images/Certified Social Engineering Defense Practitioner (CSEDP).png."
+    image: "images/Certified Social Engineering Defense Practitioner (CSEDP).png"
   },
   {
     link: "#",
