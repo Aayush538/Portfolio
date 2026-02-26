@@ -17,7 +17,7 @@ const skillsData = [
     desc: "Firewalls, IDS/IPS, Endpoint Security, Access Control",
     modalDesc: "Maintaining system security and access controls using cutting-edge endpoint and perimeter security.",
     iconType: "class",
-    icon: ["fa-solid", "fa-shield-halved"]
+    icon: ["fa-solid", "fa-user-shield"]
   },
   {
     id: "systems",
@@ -40,8 +40,8 @@ const skillsData = [
     title: "Monitoring",
     desc: "Prometheus, Grafana, Nagios, Wazuh",
     modalDesc: "Implementation of multi-server observability logic to maintain 24/7 reliability.",
-    iconType: "image",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg"
+    iconType: "class",
+    icon: ["fa-solid", "fa-chart-line"]
   },
   {
     id: "scripting",
@@ -58,6 +58,14 @@ const skillsData = [
     modalDesc: "Using high-level languages for scripting and application development.",
     iconType: "class",
     icon: ["fa-brands", "fa-python"]
+  },
+  {
+    id: "Other",
+    title: "Other",
+    desc: "AI-Assisted Development, Cybersecurity Operations, Incident Response, Windows/Linux",
+    modalDesc: "Experience in AI-driven development workflows, security operations monitoring, incident handling, and administration of Windows and Linux environments.",
+    iconType: "class",
+    icon: ["fa-solid", "fa-cubes"]
   }
 ];
 
@@ -116,7 +124,16 @@ const experienceData = [
       "Managed and optimized networks, servers & firewall ensuring security and HA.",
       "Performed incident resolution and root-cause analysis, reducing recurring system issues.",
       "Developed SQL-based operational reports for internal teams."
-    ]
+    ],
+    details: {
+      responsibilities: "Managing end-to-end IT operations including network infrastructure, server administration, and technical support for aviation systems.",
+      technologies: "Windows Server, Active Directory, MS SQL Server, PowerShell, Nutanix, Hyper-V.",
+      infrastructure: "Enterprise LAN/WAN, VLANs, OSPF/BGP Routing, VPNs, PfSense Firewall.",
+      security: "Endpoint protection, access control management, firewall rules, and security monitoring.",
+      monitoring: "Prometheus, Grafana, Nagios, Wazuh for real-time system health and security auditing.",
+      impact: "Significantly reduced system downtime and improved data recovery reliability through automated workflows.",
+      metrics: "Maintained 99.9% system availability and reduced incident response time by 30%."
+    }
   },
   {
     title: "Business Development Intern",
@@ -126,7 +143,13 @@ const experienceData = [
     duration: "July 2022 - October 2022",
     description: [
       "Conducted market and competitor analysis while managing vendor and OTA data reporting to support commercial strategy and pricing decisions."
-    ]
+    ],
+    details: {
+      responsibilities: "Market analysis and data reporting.",
+      technologies: "Excel, Data Analysis Tools.",
+      impact: "Provided actionable insights for commercial strategy.",
+      metrics: "Analyzed data from over 50 regional vendors."
+    }
   }
 ];
 
@@ -368,6 +391,7 @@ function renderProjects() {
   projectsData.forEach(project => {
     const card = document.createElement('div');
     card.className = 'project-card';
+    card.style.cursor = 'pointer';
 
     const techTags = project.tech.map(t => `<span class="tech-tag">${t}</span>`).join('');
 
@@ -378,11 +402,9 @@ function renderProjects() {
     `).join('');
 
     card.innerHTML = `
-      <a href="${project.link}" target="_blank" rel="noopener noreferrer">
-        <div class="project-image">
-          <img src="${project.image}" alt="${project.title}" />
-        </div>
-      </a>
+      <div class="project-image">
+        <img src="${project.image}" alt="${project.title}" />
+      </div>
       <div class="project-content">
         <h3 class="project-title">${project.title}</h3>
         <p class="project-description">${project.description}</p>
@@ -390,6 +412,26 @@ function renderProjects() {
         <div class="project-buttons">${buttonsHtml}</div>
       </div>
     `;
+
+    // Click event for modal
+    card.addEventListener("click", (e) => {
+      // Don't open modal if a button or link was clicked
+      if (e.target.closest('.btn') || e.target.closest('a')) return;
+
+      const modal = document.getElementById("skillModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalDescription = document.getElementById("modalDescription");
+      const modalIcon = document.getElementById("modalIcon");
+
+      modalIcon.innerHTML = `<img src="${project.image}" alt="${project.title}" style="width: 100%; max-height: 200px; object-fit: contain; border-radius: 8px;" />`;
+      modalTitle.textContent = project.title;
+      modalDescription.innerHTML = `
+        <p>${project.description}</p>
+        <div class="project-tech" style="justify-content: center; margin-top: 15px;">${techTags}</div>
+      `;
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    });
 
     // Add hover effect
     card.addEventListener("mouseenter", function () {
@@ -467,6 +509,33 @@ function renderExperience() {
       descriptionHtml = `<p class="job-description">${exp.description}</p>`;
     }
 
+    // New Expanded Details
+    let detailsHtml = '';
+    if (exp.details) {
+      detailsHtml = '<div class="job-details-grid">';
+      const fieldConfig = [
+        { key: 'responsibilities', label: 'Responsibilities', icon: 'fa-briefcase' },
+        { key: 'technologies', label: 'Technologies Used', icon: 'fa-code' },
+        { key: 'infrastructure', label: 'Infrastructure', icon: 'fa-server' },
+        { key: 'security', label: 'Security Involvement', icon: 'fa-shield-halved' },
+        { key: 'monitoring', label: 'Monitoring Tools', icon: 'fa-magnifying-glass-chart' },
+        { key: 'impact', label: 'Impact Delivered', icon: 'fa-award' },
+        { key: 'metrics', label: 'Key Metrics', icon: 'fa-chart-simple' }
+      ];
+
+      fieldConfig.forEach(field => {
+        if (exp.details[field.key]) {
+          detailsHtml += `
+            <div class="detail-item">
+              <span class="detail-label"><i class="fa-solid ${field.icon}"></i> ${field.label}</span>
+              <p class="detail-content">${exp.details[field.key]}</p>
+            </div>
+          `;
+        }
+      });
+      detailsHtml += '</div>';
+    }
+
     const typeTag = exp.type ? `<span class="job-type-tag">${exp.type}</span>` : '';
 
     item.innerHTML = `
@@ -476,6 +545,9 @@ function renderExperience() {
         <div class="company">${exp.link ? `<a href="${exp.link}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline; text-decoration-color: var(--highlight-color); text-underline-offset: 4px;" class="company-link" onclick="event.stopPropagation()">${exp.company} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.7em; margin-left: 4px; opacity: 0.7;"></i></a>` : exp.company}</div>
         <div class="job-duration">${exp.duration}</div>
         ${descriptionHtml}
+        <div class="job-expanded-details">
+          ${detailsHtml}
+        </div>
       </div>
       <div class="expand-indicator">▼</div>
     `;
@@ -558,11 +630,8 @@ function renderCertificates() {
   container.innerHTML = '';
 
   certificatesData.forEach(cert => {
-    const card = document.createElement('a');
-    card.href = cert.link;
+    const card = document.createElement('div');
     card.className = 'certificate-card';
-    card.target = "_blank";
-    card.rel = "noopener noreferrer";
 
     const certifiedTagHtml = cert.certifiedTag ? '<span class="certified-tag">Certified</span>' : '';
 
@@ -578,6 +647,18 @@ function renderCertificates() {
         <img src="${cert.image}" alt="${cert.title}" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 8px;" />
       </div>
     `;
+
+    // Click event for dedicated image modal
+    card.addEventListener("click", () => {
+      const modal = document.getElementById("imageModal");
+      const modalImg = document.getElementById("modalImg");
+      const modalImgCaption = document.getElementById("modalImgCaption");
+
+      modalImg.src = cert.image;
+      modalImgCaption.textContent = cert.title;
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    });
 
     // Add hover effect
     card.addEventListener("mouseenter", function () {
@@ -752,6 +833,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("skillModal");
   const closeModal = document.querySelector(".close-modal");
 
+  const imageModal = document.getElementById("imageModal");
+  const closeImageModal = document.querySelector(".close-image-modal");
+
   if (closeModal) {
     closeModal.addEventListener("click", () => {
       modal.classList.remove("active");
@@ -759,14 +843,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (modal) {
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        modal.classList.remove("active");
-        document.body.style.overflow = "auto";
-      }
+  if (closeImageModal) {
+    closeImageModal.addEventListener("click", () => {
+      imageModal.classList.remove("active");
+      document.body.style.overflow = "auto";
     });
   }
+
+  // Close modals on background click
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+    if (e.target === imageModal) {
+      imageModal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+  });
 
   // Initial Animation
   document.body.style.opacity = "0";
