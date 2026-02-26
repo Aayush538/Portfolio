@@ -377,7 +377,7 @@ body {
   border: 4px solid var(--secondary-bg);
   box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
   animation: float 4s ease-in-out infinite;
-  margin-left: 60px;
+  margin-left: 110px;
 }
 
 .skills-section {
